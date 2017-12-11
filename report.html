@@ -14542,7 +14542,9 @@ test_{network} = bottleneck_features['test']</code></pre>
 
 </code></pre>
 <p><strong>Question 5:</strong> Outline the steps you took to get to your final CNN architecture and your reasoning at each step.  Describe why you think the architecture is suitable for the current problem.</p>
-<p><strong>Answer:</strong> Since the example with VGG1</p>
+<p><strong>Answer:</strong> I first of all tried VGG19, since the example with VGG16 already gave good 40% accuracy when using the "adam" optimizer. I thought that having 3 convolutional layers more than VGG16, the architecture was able to learn a few more features than VGG16 and make a better job at recognizing dog breeds. This was indeed the case: with VGG19 using "adam" optimizer and 50 epochs I was able to reach the required 60% accuracy.</p>
+<p>In order to improve accuracy I thought that using networks with more layers would have been able to capture more patterns from the images and learn to recognize dog breeds even better. I tried all the other network architectures obtaining similar accuracy of about 85% in testing when training for very few epochs on their respective bottleneck features.</p>
+<p>I decided to go on with Resnet50 because it seems to process images a bit faster than InceptionV3 and Xception (admitedly I didn't do proper profiling, it's just based on my impression) and its set of weights takes way less space than InceptionV3 and Xcepection.</p>
 
 </div>
 </div>
@@ -15004,7 +15006,17 @@ Epoch 50/50
 <h2 id="Step-7:-Test-Your-Algorithm">Step 7: Test Your Algorithm<a class="anchor-link" href="#Step-7:-Test-Your-Algorithm">&#182;</a></h2><p>In this section, you will take your new algorithm for a spin!  What kind of dog does the algorithm think that <strong>you</strong> look like?  If you have a dog, does it predict your dog's breed accurately?  If you have a cat, does it mistakenly think that your cat is a dog?</p>
 <h3 id="(IMPLEMENTATION)-Test-Your-Algorithm-on-Sample-Images!">(IMPLEMENTATION) Test Your Algorithm on Sample Images!<a class="anchor-link" href="#(IMPLEMENTATION)-Test-Your-Algorithm-on-Sample-Images!">&#182;</a></h3><p>Test your algorithm at least six images on your computer.  Feel free to use any images you like.  Use at least two human and two dog images.</p>
 <p><strong>Question 6:</strong> Is the output better than you expected :) ?  Or worse :( ?  Provide at least three possible points of improvement for your algorithm.</p>
-<p><strong>Answer:</strong></p>
+<p><strong>Answer:</strong> Overall the algorithms has worked better than I expected: on the tests I made it correctly told human from dogs, I also tried one example which was neither a dog nor a human and it was correctly recognized so.</p>
+<p>On dog picture it seems to make a nice job, although it got wrong the breed of one dog: it recognized it was a Spaniel but guessed the wrong breed. On human pictures the experiment was funny and I could guess why the network suggested resemblance with certain breeds.</p>
+<p>To make the algorithm even better I would consider:</p>
+<ul>
+<li><p>Training the breed detector network for longer and see if performances can be improved; maybe for breeds that have a lot of sub-breeds, one could think of a first family to detecte the breed family (Spaniels for example) and then train a model only on Spaniels to see if one can get better overall improvements</p>
+</li>
+<li><p>When providing images of human faces the algorithm seem to perform pretty well. I'd still train a different face detector to allow for other poses</p>
+</li>
+<li><p>I'd add a moving window to make the algorithm detect more than one face/dog at a time.</p>
+</li>
+</ul>
 
 </div>
 </div>
@@ -27836,32 +27848,6 @@ XCTMRVzEc8T/D555OL9Lu4D7AAAAAElFTkSuQmCC
 <div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
 <p>Emma Stone was correcly recognized as human. Probably it looks like a Spaniel because of her brown hair in the picture, which could resemble the ears of a Spaniel dog.</p>
-
-</div>
-</div>
-</div>
-<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
-</div>
-<div class="inner_cell">
-<div class="text_cell_render border-box-sizing rendered_html">
-<h3 id="Possible-Improvements:">Possible Improvements:<a class="anchor-link" href="#Possible-Improvements:">&#182;</a></h3>
-</div>
-</div>
-</div>
-<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
-</div>
-<div class="inner_cell">
-<div class="text_cell_render border-box-sizing rendered_html">
-<p>Overall the algorithms has worked better than I expected.</p>
-<p>To make it even better I would consider:</p>
-<ul>
-<li><p>Training the breed detector network for longer and see if performances can be improved; maybe for breeds that have a lot of sub-breeds, one could think of a first family to detecte the breed family (Spaniels for example) and then train a model only on Spaniels to see if one can get better overall improvements</p>
-</li>
-<li><p>When providing images of human faces the algorithm seem to perform pretty well. I'd still train a different face detector to allow for other poses</p>
-</li>
-<li><p>I'd add a moving window to make the algorithm detect more than one face/dog at a time.</p>
-</li>
-</ul>
 
 </div>
 </div>
